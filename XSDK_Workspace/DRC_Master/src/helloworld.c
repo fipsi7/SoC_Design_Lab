@@ -1,0 +1,52 @@
+/*
+ * Copyright (c) 2012 Xilinx, Inc.  All rights reserved.
+ *
+ * Xilinx, Inc.
+ * XILINX IS PROVIDING THIS DESIGN, CODE, OR INFORMATION "AS IS" AS A
+ * COURTESY TO YOU.  BY PROVIDING THIS DESIGN, CODE, OR INFORMATION AS
+ * ONE POSSIBLE   IMPLEMENTATION OF THIS FEATURE, APPLICATION OR
+ * STANDARD, XILINX IS MAKING NO REPRESENTATION THAT THIS IMPLEMENTATION
+ * IS FREE FROM ANY CLAIMS OF INFRINGEMENT, AND YOU ARE RESPONSIBLE
+ * FOR OBTAINING ANY RIGHTS YOU MAY REQUIRE FOR YOUR IMPLEMENTATION.
+ * XILINX EXPRESSLY DISCLAIMS ANY WARRANTY WHATSOEVER WITH RESPECT TO
+ * THE ADEQUACY OF THE IMPLEMENTATION, INCLUDING BUT NOT LIMITED TO
+ * ANY WARRANTIES OR REPRESENTATIONS THAT THIS IMPLEMENTATION IS FREE
+ * FROM CLAIMS OF INFRINGEMENT, IMPLIED WARRANTIES OF MERCHANTABILITY
+ * AND FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ */
+
+#include <stdio.h>
+#include <libgpio.h>
+#include "flash.h"
+
+
+int main()
+{
+	GPIO leds;
+	int i;
+	char name[]="gpio.bit";
+
+    printf("Hello World\n");
+
+    flash_bitfile(name);
+
+    sleep(1);
+
+    leds=GPIO_init(0,0);
+    setPinMode(leds,1,1,0);
+
+    for (i=0;i<10;i++){
+
+    digitalWrite(leds,1,1,1);
+    sleep(1);
+    digitalWrite(leds,1,1,0);
+    sleep(1);
+
+    }
+
+
+    GPIO_Close(leds);
+
+    return 0;
+}
