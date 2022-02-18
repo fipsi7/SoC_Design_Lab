@@ -74,7 +74,9 @@ int flash_bitfile(char *name){
   printf("Prog_Done: %s", is_set);
 
   close(done);
-    }
+  if(is_set[0] != '1')
+	  return 1;
 
+    }
     return 0;
 }

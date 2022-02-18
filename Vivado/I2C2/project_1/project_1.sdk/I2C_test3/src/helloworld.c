@@ -19,6 +19,7 @@
 #include <linux/i2c-dev.h>
 #include "flash.h"
 #include <libgpio.h>
+#include <sys/ioctl.h>
 
 /************************** Constant Definitions *****************************/
 
@@ -65,6 +66,7 @@ int I2C_ReadByte(int device, Xuint8 addr, Xuint8 *data);
 /*
  * FD of the IIC device opened.
  */
+int Fd;
 int Fdiic;
 int Fduart;
 
@@ -85,18 +87,50 @@ int Fduart;
 ******************************************************************************/
 int main()
 {
-	int Status;
 	Xuint8 Buffer[30];
-	Xuint8 BytesWritten;
 	int i;
-	char i2c_name[]="I2C.bit";
-	char uart9600_name[]="UART9600.bit";
+	int protocol = 1; //0: I2C, 1: UART
+	int found = 0;
+	char bitnames[2][32]={"I2C.bit", "UART9600.bit"};
 
-	flash_bitfile(i2c_name);
+	system("stty -F /dev/ttyUL1 -echo");
+	usleep(10000);
 
-	/*
-	 * Open the device.
-	 */
+	while(!found)
+	{
+		protocol = (protocol + 1) % 2;
+
+		if(flash_bitfile(bitnames[protocol]))
+			return 1;
+
+		if(protocol == 1)
+		{
+			Fd = open("/dev/ttyUL1", O_RDWR);
+		}
+		else
+		{
+			Fd = open("/dev/i2c-0", O_RDWR);
+		}
+
+		if(Fd < 0)
+		{
+			printf("Cannot open file descriptor\n");
+			return 1;
+		}
+
+		if(!readBytes(Fd,0x39, 0x00, Buffer, 3, protocol))
+		{
+			if((Buffer[0] == 'T') && (Buffer[1] == 'U') && (Buffer[2] == 'W'))
+			{
+				found = 1;
+				printf("Protocol %s found!\n", protocol == 1 ? "UART" : "I2C");
+			}
+		}
+	}
+	close(Fd);
+
+	/*flash_bitfile(i2c_name);
+
 	Fdiic = open("/dev/i2c-0", O_RDWR);
 	if(Fdiic < 0)
 	{
@@ -105,15 +139,23 @@ int main()
 	}
 
 	readBytes(Fdiic,0x39, 0x00, Buffer, 3, 0);
-	close(Fdiic);
 	for(i = 0; i<3; i++)
 	{
-		printf("%x", Buffer[i]);
+		printf("%c", Buffer[i]);
 	}
 
-	/*sleep(1);
+	for(i=0; i<20; i++)
+	{
+		readBytes(Fdiic,0x39, 0x03, Buffer, 1, 0);
+		printf("\n%d", Buffer[0]);
+		usleep(100000);
+	}
+	close(Fdiic);
+
+
 	flash_bitfile(uart9600_name);
-	sleep(1);
+	usleep(1000);
+	system("stty -F /dev/ttyUL1 -echo");
 
 	Fduart = open("/dev/ttyUL1", O_RDWR);
 	if(Fduart < 0)
@@ -122,11 +164,19 @@ int main()
 		return -1;
 	}
 
-	WriteBuffer[0]=0xa;
-	WriteBuffer[1]='\n';
-	write(Fduart, WriteBuffer, 2);
-	close(Fduart);*/
-	printf("Done");
+	readBytes(Fduart, 0x39, 0x00, Buffer, 3, 1);
+	for(i = 0; i<3; i++)
+	{
+		printf("%c", Buffer[i]);
+	}
+
+	for(i=0; i<20; i++)
+	{
+		readBytes(Fduart,0x39, 0x03, Buffer, 1, 1);
+		printf("\n%d", Buffer[0]);
+		usleep(100000);
+	}*/
+
 
 	return 0;
 }
@@ -154,6 +204,7 @@ int readBytes(int device,int i2c_addr, uint8_t adr, uint8_t result[], uint8_t co
 int transRecvBytes(int device, int i2c_addr, uint8_t sendBuf[], uint8_t sendCnt, uint8_t receiveBuf[], uint8_t receiveCount, uint8_t protocol)
 {
 	transmitBytes(device, i2c_addr, sendBuf, sendCnt, protocol);
+	//usleep(10000);
 	return receiveBytes(device, i2c_addr, receiveBuf, receiveCount, protocol);
 }
 
@@ -173,7 +224,7 @@ void transmitBytes(int device, int i2c_addr, uint8_t sendBuf[], uint8_t sendCnt,
 		Status = write(device, sendBuf, sendCnt);
 		if(Status < 0)
 		{
-			printf("\n Write failed\n");
+			printf("\n I2C Write failed\n");
 			return;
 		}
 	}
@@ -181,7 +232,12 @@ void transmitBytes(int device, int i2c_addr, uint8_t sendBuf[], uint8_t sendCnt,
 	// UART
 	else
 	{
-
+		Status = write(device, sendBuf, sendCnt);
+		if(Status < 0)
+		{
+			printf("\n UART Write failed\n");
+			return;
+		}
 	}
 }
 
@@ -202,26 +258,41 @@ int receiveBytes(int device, int i2c_addr, uint8_t receiveBuf[], uint8_t cnt, Xu
 		Status = read(device, receiveBuf, cnt);
 		if(Status < 0)
 		{
-			printf("\n Read failed\n");
+			printf("\n I2C Read failed\n");
 			return 1;
 		}
 	}
 	else
-	{ int timeout_s;int msCount;
-		while(msCount < timeout_s * 1000)
+	{
+
+		int timeout_ms = 200;
+		int msCount = 0;
+		int bytes_available;
+		while(msCount < timeout_ms)
 		{
-			//if(readBytesAvailable() > = cnt)
+			ioctl(device, FIONREAD, &bytes_available);
+			if(bytes_available >= (cnt + 1))
 			{
-				//Fill with I2C or UART
+				char trashBuf[1];
 				//Read bytes
+				Status = read(device, receiveBuf, cnt);
+				if(Status < 0)
+				{
+					printf("\n UART Read failed\n");
+					return 1;
+				}
+				Status = read(device, trashBuf, 1);  // Dump the 0xa
 				return 0;
 			}
 			//else
 			{
-				delay_ms(10);
+				usleep(10000);
 				msCount += 10;
 			}
 		}
+		printf("UART Timeout");
+		return 1;
+
 	}
 	return 0;
 }
