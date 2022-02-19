@@ -1,10 +1,10 @@
 -- Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2017.4 (lin64) Build 2086221 Fri Dec 15 20:54:30 MST 2017
--- Date        : Mon Jan 17 15:01:47 2022
+-- Date        : Mon Jan 17 15:01:46 2022
 -- Host        : ubuntu running 64-bit Ubuntu 16.04.7 LTS
--- Command     : write_vhdl -force -mode funcsim
---               /home/eberhart/Desktop/SoCLab/repo/SoC_Design_Lab/Vivado/UART/myPrj1/myPrj1/myPrj1.srcs/sources_1/bd/design_1/ip/design_1_axi_gpio_1_0/design_1_axi_gpio_1_0_sim_netlist.vhdl
+-- Command     : write_vhdl -force -mode funcsim -rename_top design_1_axi_gpio_1_0 -prefix
+--               design_1_axi_gpio_1_0_ design_1_axi_gpio_1_0_sim_netlist.vhdl
 -- Design      : design_1_axi_gpio_1_0
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -37,8 +37,6 @@ entity design_1_axi_gpio_1_0_GPIO_Core is
     Bus_RNW_reg : in STD_LOGIC;
     \GEN_BKEND_CE_REGISTERS[3].ce_out_i_reg\ : in STD_LOGIC
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of design_1_axi_gpio_1_0_GPIO_Core : entity is "GPIO_Core";
 end design_1_axi_gpio_1_0_GPIO_Core;
 
 architecture STRUCTURE of design_1_axi_gpio_1_0_GPIO_Core is
@@ -487,8 +485,6 @@ entity design_1_axi_gpio_1_0_address_decoder is
     gpio_xferAck_Reg : in STD_LOGIC;
     GPIO_xferAck_i : in STD_LOGIC
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of design_1_axi_gpio_1_0_address_decoder : entity is "address_decoder";
 end design_1_axi_gpio_1_0_address_decoder;
 
 architecture STRUCTURE of design_1_axi_gpio_1_0_address_decoder is
@@ -824,8 +820,6 @@ entity design_1_axi_gpio_1_0_slave_attachment is
     GPIO_xferAck_i : in STD_LOGIC;
     Q : in STD_LOGIC_VECTOR ( 8 downto 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of design_1_axi_gpio_1_0_slave_attachment : entity is "slave_attachment";
 end design_1_axi_gpio_1_0_slave_attachment;
 
 architecture STRUCTURE of design_1_axi_gpio_1_0_slave_attachment is
@@ -1402,8 +1396,6 @@ entity design_1_axi_gpio_1_0_axi_lite_ipif is
     GPIO_xferAck_i : in STD_LOGIC;
     Q : in STD_LOGIC_VECTOR ( 8 downto 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of design_1_axi_gpio_1_0_axi_lite_ipif : entity is "axi_lite_ipif";
 end design_1_axi_gpio_1_0_axi_lite_ipif;
 
 architecture STRUCTURE of design_1_axi_gpio_1_0_axi_lite_ipif is
@@ -1507,8 +1499,6 @@ entity design_1_axi_gpio_1_0_axi_gpio is
   attribute C_TRI_DEFAULT of design_1_axi_gpio_1_0_axi_gpio : entity is -1;
   attribute C_TRI_DEFAULT_2 : integer;
   attribute C_TRI_DEFAULT_2 of design_1_axi_gpio_1_0_axi_gpio : entity is -1;
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of design_1_axi_gpio_1_0_axi_gpio : entity is "axi_gpio";
   attribute downgradeipidentifiedwarnings : string;
   attribute downgradeipidentifiedwarnings of design_1_axi_gpio_1_0_axi_gpio : entity is "yes";
   attribute ip_group : string;

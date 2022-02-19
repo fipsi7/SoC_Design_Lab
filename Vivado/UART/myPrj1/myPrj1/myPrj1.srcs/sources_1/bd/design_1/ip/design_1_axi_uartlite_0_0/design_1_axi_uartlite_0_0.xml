@@ -873,11 +873,11 @@ Writing a 1 to this bit position clears the receive FIFO
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Wed Jan 19 14:18:50 UTC 2022</spirit:value>
+            <spirit:value>Mon Feb 07 15:11:28 UTC 2022</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>7:0e204033</spirit:value>
+            <spirit:value>7:e6c8f8d1</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -892,11 +892,11 @@ Writing a 1 to this bit position clears the receive FIFO
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Wed Jan 19 14:18:50 UTC 2022</spirit:value>
+            <spirit:value>Mon Feb 07 15:11:28 UTC 2022</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>7:0e204033</spirit:value>
+            <spirit:value>7:e6c8f8d1</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -923,11 +923,11 @@ Writing a 1 to this bit position clears the receive FIFO
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Wed Jan 19 14:18:50 UTC 2022</spirit:value>
+            <spirit:value>Mon Feb 07 15:11:28 UTC 2022</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>7:bfa0999c</spirit:value>
+            <spirit:value>7:03e3079e</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -942,11 +942,11 @@ Writing a 1 to this bit position clears the receive FIFO
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Wed Jan 19 14:18:50 UTC 2022</spirit:value>
+            <spirit:value>Mon Feb 07 15:11:28 UTC 2022</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>7:bfa0999c</spirit:value>
+            <spirit:value>7:03e3079e</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -960,11 +960,11 @@ Writing a 1 to this bit position clears the receive FIFO
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Wed Jan 19 14:18:50 UTC 2022</spirit:value>
+            <spirit:value>Mon Feb 07 15:11:28 UTC 2022</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>7:0e204033</spirit:value>
+            <spirit:value>7:e6c8f8d1</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -978,11 +978,11 @@ Writing a 1 to this bit position clears the receive FIFO
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Wed Jan 19 14:20:01 UTC 2022</spirit:value>
+            <spirit:value>Mon Feb 07 15:12:42 UTC 2022</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>7:0e204033</spirit:value>
+            <spirit:value>7:e6c8f8d1</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -1673,7 +1673,7 @@ Writing a 1 to this bit position clears the receive FIFO
     <spirit:parameter>
       <spirit:name>USE_BOARD_FLOW</spirit:name>
       <spirit:displayName>Generate Board based IO Constraints</spirit:displayName>
-      <spirit:value spirit:format="bool" spirit:resolve="user" spirit:id="PARAM_VALUE.USE_BOARD_FLOW" spirit:order="1103">true</spirit:value>
+      <spirit:value spirit:format="bool" spirit:resolve="user" spirit:id="PARAM_VALUE.USE_BOARD_FLOW" spirit:order="1103">false</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>UARTLITE_BOARD_INTERFACE</spirit:name>
@@ -1716,8 +1716,6 @@ Writing a 1 to this bit position clears the receive FIFO
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.S_AXI.SUPPORTS_NARROW_BURST" xilinx:valueSource="ip_propagated" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.S_AXI.WUSER_WIDTH" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.C_S_AXI_ACLK_FREQ_HZ_d" xilinx:valueSource="propagated" xilinx:valuePermission="bd"/>
-        <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.UARTLITE_BOARD_INTERFACE" xilinx:valueSource="user"/>
-        <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.USE_BOARD_FLOW" xilinx:valueSource="user"/>
       </xilinx:configElementInfos>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>

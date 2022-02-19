@@ -1,7 +1,7 @@
 //Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
 //--------------------------------------------------------------------------------
 //Tool Version: Vivado v.2017.4 (lin64) Build 2086221 Fri Dec 15 20:54:30 MST 2017
-//Date        : Mon Jan 17 15:42:44 2022
+//Date        : Tue Feb 15 10:18:33 2022
 //Host        : ubuntu running 64-bit Ubuntu 16.04.7 LTS
 //Command     : generate_target design_1_wrapper.bd
 //Design      : design_1_wrapper
@@ -32,7 +32,9 @@ module design_1_wrapper
     FIXED_IO_ps_porb,
     FIXED_IO_ps_srstb,
     btns_5bits_tri_i,
-    leds_8bits_tri_o,
+    leds_8bits_0_tri_o,
+    sin_0,
+    sout_0,
     sws_8bits_tri_i);
   inout [14:0]DDR_addr;
   inout [2:0]DDR_ba;
@@ -56,7 +58,9 @@ module design_1_wrapper
   inout FIXED_IO_ps_porb;
   inout FIXED_IO_ps_srstb;
   input [4:0]btns_5bits_tri_i;
-  output [7:0]leds_8bits_tri_o;
+  output [7:0]leds_8bits_0_tri_o;
+  input sin_0;
+  output sout_0;
   input [7:0]sws_8bits_tri_i;
 
   wire [14:0]DDR_addr;
@@ -81,7 +85,9 @@ module design_1_wrapper
   wire FIXED_IO_ps_porb;
   wire FIXED_IO_ps_srstb;
   wire [4:0]btns_5bits_tri_i;
-  wire [7:0]leds_8bits_tri_o;
+  wire [7:0]leds_8bits_0_tri_o;
+  wire sin_0;
+  wire sout_0;
   wire [7:0]sws_8bits_tri_i;
 
   design_1 design_1_i
@@ -107,6 +113,8 @@ module design_1_wrapper
         .FIXED_IO_ps_porb(FIXED_IO_ps_porb),
         .FIXED_IO_ps_srstb(FIXED_IO_ps_srstb),
         .btns_5bits_tri_i(btns_5bits_tri_i),
-        .leds_8bits_tri_o(leds_8bits_tri_o),
+        .leds_8bits_0_tri_o(leds_8bits_0_tri_o),
+        .sin_0(sin_0),
+        .sout_0(sout_0),
         .sws_8bits_tri_i(sws_8bits_tri_i));
 endmodule

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<bd:repository xmlns:bd="http://www.xilinx.com/bd" bd:BoundaryCRC="0xD13F57A38CAE1F38" bd:device="xc7z020clg484-1" bd:isValidated="true" bd:synthFlowMode="Hierarchical" bd:tool_version="2017.4" bd:top="design_1" bd:version="1.00.a">
+<bd:repository xmlns:bd="http://www.xilinx.com/bd" bd:BoundaryCRC="0xADFE10CB80992795" bd:device="xc7z020clg484-1" bd:isValidated="true" bd:synthFlowMode="Hierarchical" bd:tool_version="2017.4" bd:top="design_1" bd:version="1.00.a">
 
   <spirit:component xmlns:spirit="http://www.spiritconsortium.org/XMLSchema/SPIRIT/1685-2009">
     <spirit:vendor>xilinx.com</spirit:vendor>
@@ -153,7 +153,7 @@
         <spirit:abstractionType spirit:library="interface" spirit:name="gpio_rtl" spirit:vendor="xilinx.com" spirit:version="1.0"/>
       </spirit:busInterface>
       <spirit:busInterface>
-        <spirit:name>leds_8bits</spirit:name>
+        <spirit:name>leds_8bits_0</spirit:name>
         <spirit:master/>
         <spirit:busType spirit:library="interface" spirit:name="gpio" spirit:vendor="xilinx.com" spirit:version="1.0"/>
         <spirit:abstractionType spirit:library="interface" spirit:name="gpio_rtl" spirit:vendor="xilinx.com" spirit:version="1.0"/>
@@ -202,17 +202,8 @@
         <spirit:configurableElementValues>
           <spirit:configurableElementValue spirit:referenceId="bd:xciName">design_1_axi_gpio_0_0</spirit:configurableElementValue>
           <spirit:configurableElementValue spirit:referenceId="USE_BOARD_FLOW">true</spirit:configurableElementValue>
-          <spirit:configurableElementValue spirit:referenceId="GPIO_BOARD_INTERFACE">btns_5bits</spirit:configurableElementValue>
-          <spirit:configurableElementValue spirit:referenceId="GPIO2_BOARD_INTERFACE">sws_8bits</spirit:configurableElementValue>
-        </spirit:configurableElementValues>
-      </spirit:componentInstance>
-      <spirit:componentInstance>
-        <spirit:instanceName>axi_gpio_1</spirit:instanceName>
-        <spirit:componentRef spirit:library="ip" spirit:name="axi_gpio" spirit:vendor="xilinx.com" spirit:version="2.0"/>
-        <spirit:configurableElementValues>
-          <spirit:configurableElementValue spirit:referenceId="bd:xciName">design_1_axi_gpio_1_0</spirit:configurableElementValue>
-          <spirit:configurableElementValue spirit:referenceId="USE_BOARD_FLOW">true</spirit:configurableElementValue>
-          <spirit:configurableElementValue spirit:referenceId="GPIO_BOARD_INTERFACE">leds_8bits</spirit:configurableElementValue>
+          <spirit:configurableElementValue spirit:referenceId="GPIO_BOARD_INTERFACE">sws_8bits</spirit:configurableElementValue>
+          <spirit:configurableElementValue spirit:referenceId="GPIO2_BOARD_INTERFACE">btns_5bits</spirit:configurableElementValue>
         </spirit:configurableElementValues>
       </spirit:componentInstance>
       <spirit:componentInstance>
@@ -278,6 +269,8 @@
           <spirit:configurableElementValue spirit:referenceId="PCW_EN_TTC0">1</spirit:configurableElementValue>
           <spirit:configurableElementValue spirit:referenceId="PCW_EN_USB0">1</spirit:configurableElementValue>
           <spirit:configurableElementValue spirit:referenceId="PCW_IRQ_F2P_INTR">1</spirit:configurableElementValue>
+          <spirit:configurableElementValue spirit:referenceId="PCW_CORE0_FIQ_INTR">0</spirit:configurableElementValue>
+          <spirit:configurableElementValue spirit:referenceId="PCW_CORE0_IRQ_INTR">0</spirit:configurableElementValue>
           <spirit:configurableElementValue spirit:referenceId="PCW_PRESET_BANK0_VOLTAGE">LVCMOS 3.3V</spirit:configurableElementValue>
           <spirit:configurableElementValue spirit:referenceId="PCW_PRESET_BANK1_VOLTAGE">LVCMOS 1.8V</spirit:configurableElementValue>
           <spirit:configurableElementValue spirit:referenceId="PCW_UIPARAM_DDR_MEMORY_TYPE">DDR 3</spirit:configurableElementValue>
@@ -507,8 +500,15 @@
         <spirit:componentRef spirit:library="ip" spirit:name="axi_uartlite" spirit:vendor="xilinx.com" spirit:version="2.0"/>
         <spirit:configurableElementValues>
           <spirit:configurableElementValue spirit:referenceId="bd:xciName">design_1_axi_uartlite_0_0</spirit:configurableElementValue>
+        </spirit:configurableElementValues>
+      </spirit:componentInstance>
+      <spirit:componentInstance>
+        <spirit:instanceName>axi_gpio_1</spirit:instanceName>
+        <spirit:componentRef spirit:library="ip" spirit:name="axi_gpio" spirit:vendor="xilinx.com" spirit:version="2.0"/>
+        <spirit:configurableElementValues>
+          <spirit:configurableElementValue spirit:referenceId="bd:xciName">design_1_axi_gpio_1_0</spirit:configurableElementValue>
           <spirit:configurableElementValue spirit:referenceId="USE_BOARD_FLOW">true</spirit:configurableElementValue>
-          <spirit:configurableElementValue spirit:referenceId="UARTLITE_BOARD_INTERFACE">Custom</spirit:configurableElementValue>
+          <spirit:configurableElementValue spirit:referenceId="GPIO_BOARD_INTERFACE">leds_8bits</spirit:configurableElementValue>
         </spirit:configurableElementValues>
       </spirit:componentInstance>
     </spirit:componentInstances>
@@ -525,13 +525,13 @@
       </spirit:interconnection>
       <spirit:interconnection>
         <spirit:name>ps7_0_axi_periph_M01_AXI</spirit:name>
-        <spirit:activeInterface spirit:busRef="S_AXI" spirit:componentRef="axi_gpio_1"/>
         <spirit:activeInterface spirit:busRef="M01_AXI" spirit:componentRef="ps7_0_axi_periph"/>
+        <spirit:activeInterface spirit:busRef="S_AXI" spirit:componentRef="axi_uartlite_0"/>
       </spirit:interconnection>
       <spirit:interconnection>
         <spirit:name>ps7_0_axi_periph_M02_AXI</spirit:name>
         <spirit:activeInterface spirit:busRef="M02_AXI" spirit:componentRef="ps7_0_axi_periph"/>
-        <spirit:activeInterface spirit:busRef="S_AXI" spirit:componentRef="axi_uartlite_0"/>
+        <spirit:activeInterface spirit:busRef="S_AXI" spirit:componentRef="axi_gpio_1"/>
       </spirit:interconnection>
     </spirit:interconnections>
     <spirit:adHocConnections>
@@ -539,15 +539,15 @@
         <spirit:name>processing_system7_0_FCLK_CLK0</spirit:name>
         <spirit:internalPortReference spirit:componentRef="processing_system7_0" spirit:portRef="FCLK_CLK0"/>
         <spirit:internalPortReference spirit:componentRef="axi_gpio_0" spirit:portRef="s_axi_aclk"/>
-        <spirit:internalPortReference spirit:componentRef="axi_gpio_1" spirit:portRef="s_axi_aclk"/>
         <spirit:internalPortReference spirit:componentRef="processing_system7_0" spirit:portRef="M_AXI_GP0_ACLK"/>
         <spirit:internalPortReference spirit:componentRef="rst_ps7_0_100M" spirit:portRef="slowest_sync_clk"/>
+        <spirit:internalPortReference spirit:componentRef="axi_uartlite_0" spirit:portRef="s_axi_aclk"/>
         <spirit:internalPortReference spirit:componentRef="ps7_0_axi_periph" spirit:portRef="ACLK"/>
         <spirit:internalPortReference spirit:componentRef="ps7_0_axi_periph" spirit:portRef="M00_ACLK"/>
         <spirit:internalPortReference spirit:componentRef="ps7_0_axi_periph" spirit:portRef="M01_ACLK"/>
         <spirit:internalPortReference spirit:componentRef="ps7_0_axi_periph" spirit:portRef="M02_ACLK"/>
         <spirit:internalPortReference spirit:componentRef="ps7_0_axi_periph" spirit:portRef="S00_ACLK"/>
-        <spirit:internalPortReference spirit:componentRef="axi_uartlite_0" spirit:portRef="s_axi_aclk"/>
+        <spirit:internalPortReference spirit:componentRef="axi_gpio_1" spirit:portRef="s_axi_aclk"/>
       </spirit:adHocConnection>
       <spirit:adHocConnection>
         <spirit:name>processing_system7_0_FCLK_RESET0_N</spirit:name>
@@ -563,12 +563,12 @@
         <spirit:name>rst_ps7_0_100M_peripheral_aresetn</spirit:name>
         <spirit:internalPortReference spirit:componentRef="rst_ps7_0_100M" spirit:portRef="peripheral_aresetn"/>
         <spirit:internalPortReference spirit:componentRef="axi_gpio_0" spirit:portRef="s_axi_aresetn"/>
-        <spirit:internalPortReference spirit:componentRef="axi_gpio_1" spirit:portRef="s_axi_aresetn"/>
+        <spirit:internalPortReference spirit:componentRef="axi_uartlite_0" spirit:portRef="s_axi_aresetn"/>
         <spirit:internalPortReference spirit:componentRef="ps7_0_axi_periph" spirit:portRef="M00_ARESETN"/>
         <spirit:internalPortReference spirit:componentRef="ps7_0_axi_periph" spirit:portRef="M01_ARESETN"/>
         <spirit:internalPortReference spirit:componentRef="ps7_0_axi_periph" spirit:portRef="M02_ARESETN"/>
         <spirit:internalPortReference spirit:componentRef="ps7_0_axi_periph" spirit:portRef="S00_ARESETN"/>
-        <spirit:internalPortReference spirit:componentRef="axi_uartlite_0" spirit:portRef="s_axi_aresetn"/>
+        <spirit:internalPortReference spirit:componentRef="axi_gpio_1" spirit:portRef="s_axi_aresetn"/>
       </spirit:adHocConnection>
       <spirit:adHocConnection>
         <spirit:name>rx_0_1</spirit:name>
@@ -580,6 +580,11 @@
         <spirit:internalPortReference spirit:componentRef="axi_uartlite_0" spirit:portRef="tx"/>
         <spirit:externalPortReference spirit:portRef="sout_0"/>
       </spirit:adHocConnection>
+      <spirit:adHocConnection>
+        <spirit:name>axi_uartlite_0_interrupt</spirit:name>
+        <spirit:internalPortReference spirit:componentRef="axi_uartlite_0" spirit:portRef="interrupt"/>
+        <spirit:internalPortReference spirit:componentRef="processing_system7_0" spirit:portRef="IRQ_F2P"/>
+      </spirit:adHocConnection>
     </spirit:adHocConnections>
     <spirit:hierConnections>
       <spirit:hierConnection spirit:interfaceRef="DDR/processing_system7_0_DDR">
@@ -588,14 +593,14 @@
       <spirit:hierConnection spirit:interfaceRef="FIXED_IO/processing_system7_0_FIXED_IO">
         <spirit:activeInterface spirit:busRef="FIXED_IO" spirit:componentRef="processing_system7_0"/>
       </spirit:hierConnection>
-      <spirit:hierConnection spirit:interfaceRef="btns_5bits/axi_gpio_0_GPIO">
-        <spirit:activeInterface spirit:busRef="GPIO" spirit:componentRef="axi_gpio_0"/>
+      <spirit:hierConnection spirit:interfaceRef="btns_5bits/axi_gpio_0_GPIO2">
+        <spirit:activeInterface spirit:busRef="GPIO2" spirit:componentRef="axi_gpio_0"/>
       </spirit:hierConnection>
-      <spirit:hierConnection spirit:interfaceRef="leds_8bits/axi_gpio_1_GPIO">
+      <spirit:hierConnection spirit:interfaceRef="leds_8bits_0/axi_gpio_1_GPIO">
         <spirit:activeInterface spirit:busRef="GPIO" spirit:componentRef="axi_gpio_1"/>
       </spirit:hierConnection>
-      <spirit:hierConnection spirit:interfaceRef="sws_8bits/axi_gpio_0_GPIO2">
-        <spirit:activeInterface spirit:busRef="GPIO2" spirit:componentRef="axi_gpio_0"/>
+      <spirit:hierConnection spirit:interfaceRef="sws_8bits/axi_gpio_0_GPIO">
+        <spirit:activeInterface spirit:busRef="GPIO" spirit:componentRef="axi_gpio_0"/>
       </spirit:hierConnection>
     </spirit:hierConnections>
   </spirit:design>

@@ -1,7 +1,7 @@
 -- Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2017.4 (lin64) Build 2086221 Fri Dec 15 20:54:30 MST 2017
--- Date        : Wed Jan 19 15:20:23 2022
+-- Date        : Tue Feb 15 10:20:59 2022
 -- Host        : ubuntu running 64-bit Ubuntu 16.04.7 LTS
 -- Command     : write_vhdl -force -mode synth_stub
 --               /home/eberhart/Desktop/SoCLab/repo/SoC_Design_Lab/Vivado/UART/myPrj1/myPrj1/myPrj1.srcs/sources_1/bd/design_1/ip/design_1_xbar_0/design_1_xbar_0_stub.vhdl

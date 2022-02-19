@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item value="/home/eberhart/Desktop/SoCLab/repo/SoC_Design_Lab/petalinux/build/tmp/sysroots/plnx_arm/include" key="org.eclipse.cdt.utils.ui.controls.FileListControl"/>
+	<item value="Default C source template" key="LastUsedSourceTemplate"/>
+	<item value="Default C header template" key="LastUsedHeaderTemplate"/>
+	<section name="org.eclipse.cdt.ui.text.hover.CMacroExpansionExploration">
+	</section>
+	<section name="completion_proposal_size">
+	</section>
+</section>
