@@ -1,26 +1,73 @@
-# WARNING
+# WARNINGS
 Due to compatibility issues regarding the dynamic reconfiguration and the IPs, it is crucial to use the Vivado and Petalinux 2017.4 versions.
+Also note that apparently the Zedboard only works if the UART is connected, even if it is not used.
 
-# Allgmeines:Projektbeschreibung
-wos dama, wos duads, wos geht, ...
-Anhang: Projektordnerstruktur erklären, und wie man Programm/Projekt verwendet
+# Introduction
 
+## Motivation
+The main idea of this project was to combine IoT test capabilities with dynamic reconfiguration. On the one hand, we were interested in IoT devices and their specific protocols in general. On the other hand, we wanted to experiment with dynamic reconfiguration inside the ZYNQ platform.
 
+## Project idea
+![ProjectOverview](ProjectOverview.png)
+The basic idea is to use the development board "Zedboard" (based on the ZYNQ platform) as a protocol detector for IoT devices. For proof of concept, we implemented two different protocols, I2C and UART. The protocols are realised directly in hardware in the programming logic (PL) of the board. To bring dynamic reconfiguration in the project, we only use one of the two protocol IP blocks and use dynamic reconfiguration to switch between these FPGA blocks. 
+
+![Procedure](Procedure.png)
+To test our design, we implemented two dummy IoT devices on an STM32 Nucleo Board. We try one of our protocols and check if the IoT device answers accordingly. If this is not the case, we switch to the next protocol until we found the right one.
+
+## Overview of programs
+* Vivado: programming logic design
+* Petalinux: Os-design for Zedboard
+* XSDK: C-Code for Zedboard
+* Keil uVision: C-Code for Nucleo Board
+
+# Folder Structure
+```
+.
+├── Documentation
+├── Keil
+├── petalinux
+├── README.md
+├── srcLinuxApp -> ./Vivado/I2C2/project_1/project_1.sdk/I2C_test3/
+└── Vivado
+```
+
+```
+srcLinuxApp
+├── Debug
+│   ├── I2C_test3.elf
+│   ├── I2C_test3.elf.size
+│   ├── makefile
+│   ├── objects.mk
+│   ├── sources.mk
+│   └── src
+│       ├── flash.d
+│       ├── flash.o
+│       ├── helloworld.d
+│       ├── helloworld.o
+│       └── subdir.mk
+├── RemoteSystemsTempFiles
+├── SDK.log
+└── src
+    ├── flash.c
+    ├── flash.h
+    └── helloworld.c
+```
 
 # Vivado 2017.4
 As we were using the Zedboard with the Zynq processor from Xilinx, we also used the development environment from Xilinx which is called Vivado. It allows to write Verilog and VHDL and it makes it also possible to structurize the design in a hierarchical way. Furthermore, Xilinx IP cores can be added from a list and connected via a block design. This structure can automatically be wrapped to an HDL code. After that it can run the standard synthesize process.
 
 ## Projects
-Because we used dynamic reconfiguration for switching the protocols, we had to create two designs which look similar. Both have in common that they contain the Zynq block with its busses and peripheral components. The only difference are the IP cores which are used for communication.
+Because we used dynamic reconfiguration for switching the protocols, we had to create two designs which look similar. Both have in common that they contain the Zynq block with its busses and peripheral components including I/O blocks for buttons and LEDs. The only difference are the IP cores which are used for communication.
 
 The first design contains the IP core for the UART communication
-[Bild]
+![VivadoUart](VivadoUart)
 The second one contains the IP core for the I2C communication
-[Bild]
+![VivadoI2C](VivadoI2C)
 Both designs are synthesized independently and switched by the processor at runtime, depending on the application inside.  
 
 Note that the Zynq block is also included in the block design. This is just used for configuration and not for synthesizing, because the processor exists as a hard core and is not realised in the programming logic (PL).
 The interrupt signals of both communication blocks are connected to the processing system. They are not directly used by our code but used by the kernel. Not connecting the interrupts results in the kernel not starting properly.  
+
 ## IPs
 We chose both IP cores from the Xilinx IP library, because these cores can be controlled using the AXI bus, which is used to communicate with the processor and there were drivers provided to call it from Petalinux. 
 The IP used for UART communication is the AXI UART Lite. It offers on the one side the AXI bus for processor communication and on the other side the UART lines RX and TX. The baud rate of this IP is configured at design time.
@@ -46,11 +93,11 @@ petalinux-build
 petalinux-package --boot --format BIN --force --fsbl images/linux/zynq_fsbl.elf --fpga images/linux/design_1_wrapper.bit --uboot
 ```
 
-# Zedboard Software
+# Petalinux Application
 The previous chapters describe the steps to create everything needed to setup the SD card. This SD card then sets up both the OS and the programmable logic (PL) of the board. In this chapter, we describes the control software that is running on the board.
 
 ## Features
-The Zedboard Software implements both the general protocol implementation and the specific test software to operate our example IoT devices emulated by the STM. The following functionality is g iven:
+The Zedboard Software implements both the general protocol implementation and the specific test software to operate our example IoT devices emulated by the STM. The following functionality is given:
 
 * General protocol detection:
     * Basic sending and receiving functions for UART and I2C  
@@ -71,15 +118,17 @@ Both the protocol detection and further IoT device usage strongly depends on the
 The software was developed with Xilinx SDK (XSDK). It can be found in the linked folder "srcLinuxApp". 
 
 ### First time execution
+Note: To establish an ethernet communication, it is recommended to use a network with a DHCP server. Otherwise it is possible to set a static IP in Petalinux.
+
 To start the program on the Zedboard for the first time, a connection to the Zedboard has to be established. For that,  insert the SD card in the Zedboard and turn it on. After that, connect the PC to the Zedboard by the Ethernet socket of the Zedboard. Wait a few minutes so the starting routines of the Zedboard are finished and connect via SSH inside a terminal:
 
 ```
-ssh root@192.168.137.2
+ssh root@<IP-Address>
 ```
 
 Both the username and the password of the Zedboard is "root". After logging in, run XSDK. Create the Zynq device under the "Run Configurations":
 
-Host: 192.168.137.2
+Host: <IP-Address>
 Port: 1534
 
 After that, create a new targed with this board, the I2C_test3 project and with debug type "Linux Application Debug", and choose "/home/root/iottester" as the remote file path.
@@ -93,7 +142,7 @@ After the first execution is done, the program can either be started again by pr
 ./iottester
 ```
 
-# IoT device emulation
+# IoT Device application
 We now have discussed every step to configure and run the Zedboard. In this chapter, we discuss the example IoT devices that we emulate on an STM32 nucleo development board. The software was developed with Keil uVision 5.
 
 ## Features
@@ -129,7 +178,7 @@ The Zedboard tries to detect the communication protocol and then reads the secon
 ## Hardware setup
 The following figure shows how to connect the boards and which LEDs and Buttons can be used:
 
-TODO
+![HardwareSetup](HardwareSetup.jpg)
 
 ### Connection
 The Zedboard pins JD1_P and JD1_N are connected to the Nucleo-Board's pins PB6 and PB7. Depending on the chosen protocol, they fulfill the following protocol pin functionality:
