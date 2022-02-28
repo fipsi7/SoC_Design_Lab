@@ -220,19 +220,19 @@ With the protocol the Zedboard is able to request parts of the IoT device memory
 2. Memory address: The second byte is the address of the starting byte of the memory that are requested. (Do not mistake this with the I2C address). The value can range from 0-6 since it is a 7-byte-Memory.
 3. Count: The last byte represents the number of memory bytes that are requested. This can at maximum be n=7-address.
 
+The IoT device than has to send the requested memory data back.
+
 ## Protocol detection
-The Zedboard needs to have a possibility to recognize if it has chosen the same protocol as the Nucleo Board. In our test implementation, we chose to give the Zedboard the control to detect the right protocol by implementing a special request that the IoT device has to answer. If it does not TODO
+The Zedboard needs to have a possibility to recognize if it has chosen the same protocol as the Nucleo Board. In our test implementation, we chose to give the Zedboard the control. It detects the right protocol by implementing a special request that the IoT device has to answer. If it does not get an answer it assumes the protocol is wrong and continues with the procedure.
 
-
+The special request consists of the first three memory bytes, that must be 'T', 'U' and 'W' so the IoT device gets  acknowledged.
 
 ## Starting the Test
+To perform the test, connect the boards as shown in the previous figure. Power on both devices and start the iottester-pogram (see XSDK execution on how to do this). After that, flash the Nucleo Board. The Zedboard should now start to count and also print this in its terminal. The standard protocol is I2C, indicated by the status LEDs on Zedboard and Nucleo Board.
 
 ## Test process
+To test the program, you can now switch the protocols with the button on the Nucleo Board. The current communication will fail, then it will try the other protocol. After that, the counting goes on.
 
-## Activation TODO
-For UART connection, open a UART terminal program (like PuTTY: https://www.putty.org/) and wait for the login prompt. 
-
- To communicate with the IoT device, we send it our specific control byte "0x7E", followed by the memory address of the IoT device ()
 
 
 
