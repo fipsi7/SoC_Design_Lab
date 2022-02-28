@@ -8,10 +8,12 @@ Also note that apparently the Zedboard only works if the UART is connected, even
 The main idea of this project was to combine IoT test capabilities with dynamic reconfiguration. On the one hand, we were interested in IoT devices and their specific protocols in general. On the other hand, we wanted to experiment with dynamic reconfiguration inside the ZYNQ platform.
 
 ## Project idea
-![ProjectOverview](https://user-images.githubusercontent.com/93939161/156030603-36698eb1-02b0-4edb-9fb9-c63aa8b95576.png)
+![ProjectOverview](https://user-images.githubusercontent.com/93939161/156030603-36698eb1-02b0-4edb-9fb9-c63aa8b95576.png)  
+
 The basic idea is to use the development board "Zedboard" (based on the ZYNQ platform) as a protocol detector for IoT devices. For proof of concept, we implemented two different protocols, I2C and UART. The protocols are realised directly in hardware in the programming logic (PL) of the board. To bring dynamic reconfiguration in the project, we only use one of the two protocol IP blocks and use dynamic reconfiguration to switch between these FPGA blocks. 
 
-![Procedure](https://user-images.githubusercontent.com/93939161/156030611-d17196f1-e77e-4263-8730-1114a228fdbf.png)
+![Procedure](https://user-images.githubusercontent.com/93939161/156030611-d17196f1-e77e-4263-8730-1114a228fdbf.png)  
+
 To test our design, we implemented two dummy IoT devices on an STM32 Nucleo Board. We try one of our protocols and check if the IoT device answers accordingly. If this is not the case, we switch to the next protocol until we found the right one.
 
 ## Overview of programs
@@ -59,10 +61,14 @@ As we were using the Zedboard with the Zynq processor from Xilinx, we also used 
 ## Projects
 Because we used dynamic reconfiguration for switching the protocols, we had to create two designs which look similar. Both have in common that they contain the Zynq block with its busses and peripheral components including I/O blocks for buttons and LEDs. The only difference are the IP cores which are used for communication.
 
-The first design contains the IP core for the UART communication
-![VivadoUart](https://user-images.githubusercontent.com/93939161/156030610-2508ef1a-00eb-4261-887b-ddf9c821abbd.png)
-The second one contains the IP core for the I2C communication
-![VivadoI2C](https://user-images.githubusercontent.com/93939161/156030606-58ea3b44-c78d-47df-b544-a643c0cedd36.png)
+The first design contains the IP core for the UART communication:  
+
+![VivadoUart](https://user-images.githubusercontent.com/93939161/156030610-2508ef1a-00eb-4261-887b-ddf9c821abbd.png)  
+
+The second one contains the IP core for the I2C communication:  
+
+![VivadoI2C](https://user-images.githubusercontent.com/93939161/156030606-58ea3b44-c78d-47df-b544-a643c0cedd36.png)  
+
 Both designs are synthesized independently and switched by the processor at runtime, depending on the application inside.  
 
 Note that the Zynq block is also included in the block design. This is just used for configuration and not for synthesizing, because the processor exists as a hard core and is not realised in the programming logic (PL).
