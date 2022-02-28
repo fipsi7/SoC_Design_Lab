@@ -208,7 +208,7 @@ On the Nucleo Board, the two buttons and the LED is used.
 The blue button switches protocol.
 The black button resets the board.
 
-The LED indicates wether UART or I2C mode is activated. An on LED indicates I2C mode, an off LED indicates UART mode.
+The LED indicates wether UART or I2C mode is activated. On indicates I2C mode, Off indicates UART mode.
 
 ## Memory
 The memory of the IoT device is 7 bytes big and can be addressed via the protocol. It can be written and read by the IoT device but only read by the Zedboard. 
@@ -228,7 +228,7 @@ The Zedboard needs to have a possibility to recognize if it has chosen the same 
 The special request consists of the first three memory bytes, that must be 'T', 'U' and 'W' so the IoT device gets  acknowledged.
 
 ## Starting the Test
-To perform the test, connect the boards as shown in the previous figure. Power on both devices and start the iottester-pogram (see XSDK execution on how to do this). After that, flash the Nucleo Board. The Zedboard should now start to count and also print this in its terminal. The standard protocol is I2C, indicated by the status LEDs on Zedboard and Nucleo Board.
+To perform the test, connect the boards as shown in the previous figure. Power on both devices and start the iottester-program (see [XSDK execution](#normal-execution) on how to do this). After that, flash the Nucleo Board. The Zedboard should now start to count and also print this in its terminal. The standard protocol is I2C, indicated by the status LEDs on Zedboard and Nucleo Board.
 
 ## Test process
 To test the program, you can now switch the protocols with the button on the Nucleo Board. The current communication will fail, then it will try the other protocol. After that, the counting goes on.
