@@ -22,6 +22,79 @@ petalinux-build
 petalinux-package --boot --format BIN --force --fsbl images/linux/zynq_fsbl.elf --fpga images/linux/design_1_wrapper.bit --uboot
 ```
 
-# SW: STM, XSDK (also auf Petalinux), dyn. Rekonfigurieren!
+# Zedboard Software
+The previous chapters describe the steps to create everything needed to setup the SD card. This SD card then sets up both the OS and the programmable logic (PL) of the board. In this chapter, we describes the control software that is running on the board.
+
+## Features
+The Zedboard Software implements both the general protocol implementation and the specific test software to operate our example IoT devices emulated by the STM. The following functionality is g iven:
+
+* General protocol detection:
+    * Basic sending and receiving functions for UART and I2C  
+    * Trying I2C protocol with a previous defined address in normal mode
+    * Trying UART protocol with 9600 Baud
+    * Switching between UART and I2C by Dynamic Reconfiguration until correct protocol is found
+* Specific test implementation:
+    * Generating LED signals for visualization
+    * Reading Button Input for quitting the program
+    * Implementing the specific test protocol 
+    * Continuously reading a test counter from the IoT device
+
+The general protocol detection routine tries to detect the IoT devices' protocol. After that, the software can operate the IoT device. 
+
+Both the protocol detection and further IoT device usage strongly depends on the IoT device. To test if everything is working, we implemented an example protocol descibed in chapter "Test Implementation".
+
+## XSDK
+The software was developed with Xilinx SDK (XSDK). It can be found in the linked folder "srcLinuxApp". 
+
+### First time execution
+To start the program on the Zedboard for the first time, a connection to the Zedboard has to be established. For that,  insert the SD card in the Zedboard and turn it on. After that, connect the PC to the Zedboard by the Ethernet socket of the Zedboard. Wait a few minutes so the starting routines of the Zedboard are finished and connect via SSH inside a terminal:
+
+```
+ssh root@192.168.137.2
+```
+
+Both the username and the password of the Zedboard is "root". After logging in, run XSDK. Create the Zynq device under the "Run Configurations":
+
+Host: 192.168.137.2
+Port: 1534
+
+After that, create a new targed with this board, the I2C_test3 project and with debug type "Linux Application Debug", and choose "/home/root/iottester" as the remote file path.
+
+Pressing play will now start the software, it can also be debugged now.
+
+### Normal Execution
+After the first execution is done, the program can either be started again by pressing play again in XSDK or in the ethernet SSH connection by running the executable in the root-directory:
+
+```
+./iottester
+```
+
+# IoT device emulation
+We now have discussed every step to configure and run the Zedboard. In this chapter, we discuss the example IoT devices that we emulate on an STM32 nucleo development board. The software was developed with Keil uVision 5.
+
+## Features
+The program implements two example IoT devices that are identical besides their protocol. This protocol can be switched with a button. Two test protocols, I2C (normal mode, address 0x39) and UART (9600 Baud) are implemented.
+
+Their would be many ways to design the communication protocol between Zedboard and STM. The IoT devices orient on the specific protocol implementation described in "Test Implementation". 
+
+The following functionality is given:
+* Basic functionality:
+    * Timer to generate a secondly counter saved in the IoT device memory
+    * I2C and UART functionality
+    * Debug-UART via PC
+    * LED for protocol visualization
+    * Button for protocol switching
+* Specific protocol functionality: 
+    * IoT device memory that can be accessed by the Zedboard via the protocols
+    * Receiving control information from Zedboard
+    * Transmitting memory data based on the received control information
+
+The basic idea of this software is to switch between the two protocols to test the Zedboard. Its memory includes the described control information "TUW", a counter, and three additional dummy bytes.
+
+## Operation
+To run the software, simply install Keil uVision 5, build and run the project on the STM by connecting it with the USB cable. This cable also serves as the COM port for the debug UART.
+
+# Test Implementation
+TODO
 
 
